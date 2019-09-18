@@ -1,107 +1,25 @@
 // vocal, drum, bass, and other are volumes ranging from 0 to 100
-var firstRun = true
+function draw_one_frame(vocal, drum, bass, other) {
+  background(20);
+  rectMode(CENTER);
 
-const gradients = Array(20).fill(0)
-const ellipses = Array(10).fill([0,0])
+  let bar_spacing = width/5;
+  let bar_width = width/6;
+  let bar_pos_y = height/2;
 
-let maxArr = [90,90,90,77]
+  // vocal bar is red
+  fill(200, 0, 0);
+  rect(1 * bar_spacing, bar_pos_y, bar_width, 4 * vocal);
 
-function draw_one_frame(vocal, drum, bass, other, count) {
-  if(firstRun){
-    windowResized()
-    firstRun = false;
-  }
-  colorMode(HSB)
-  background(255)
-  strokeJoin(ROUND)
-  
-  let vArr = [vocal, drum, bass, other]
-  // maxArr = maxArr.map((oldMax, i) => max(oldMax, vArr[i]))
-  let [vocalP, drumP, bassP, otherP] = vArr.map((val, i) => Math.min(1, val/maxArr[i]))
+  // drum bar is green
+  fill(0, 200, 0);
+  rect(2 * bar_spacing, bar_pos_y, bar_width, 4 * drum);
 
-  let cutOff = 0.3
-  otherP = Math.max(cutOff, otherP*(1+cutOff))-cutOff
+  // bass bar is blue
+  fill(0, 0, 200);
+  rect(3 * bar_spacing, bar_pos_y, bar_width, 4 * bass);
 
-  gradients.push(drumP)
-  gradients.shift()
-  gradient()
-
-
-  noFill()
-  translate(width/2, height/2)
-
-
-  let zoomDiff = 0.2
-  let rotsDiff = count*0.0002
-
-  console.log(otherP)
-
-  push()
-  stroke(255, 0.5)
-  scale(1.5)
-  sacred(otherP, 10+rotsDiff)
-
-  scale(zoomDiff)
-  sacred(otherP, -(5+rotsDiff*rotsDiff))
-
-  scale(zoomDiff)
-  sacred(otherP, 2+rotsDiff*rotsDiff*rotsDiff*rotsDiff)
-
-  // scale(zoomDiff)
-  // sacred(otherP, -(2+rotsDiff))
-  pop()
-
-
-  ellipses.push([bassP*width*0.8, vocalP*height])
-  ellipses.shift()
-
-  stroke(330, 100, 40, 0.6)
-  ellipses.forEach((ellipSize,i) => {
-    let p = i/ellipses.length
-    strokeWeight(p*10)
-    ellipse(0, 0, ellipSize[0], ellipSize[1])
-  })
-}
-
-function sacred(sacredP, rotations){
-  let size = min(width, height)/2*(1-0.1*sacredP)
-
-  strokeWeight(2*sacredP)
-  ellipse(0,0,size*2)
-
-  strokeWeight(5*sacredP)
-  // let size = min(width,height)/2
-  // let rotations = floor(count*0.001)+2
-
-
-  push()
-  for(let i = 0; i < Math.abs(rotations); i++){
-    // line(0,-size, size,0)
-    // line(0,-size, -size,0)
-    let extendP = sacredP
-    triangle(-size,-size, 0,size*extendP, size,-size)
-    rotate(1/rotations*360)
-  }
-  pop()
-}
-
-function gradient(){
-  noStroke()
-  for(let i = 0; i < gradients.length; i++){
-    let p = i/gradients.length
-    let gradient = gradients[i]
-    let hue = map(gradient, 0,1, 30,0)
-    let sat = map(gradient, 0,1, 50,90)
-    let bright = map(gradient, 0,1, 20, 90)
-    fill(hue, sat, bright, 0.8)
-
-    let totHeight = height*(1+2/gradients.length)
-    let barHeight = 2*totHeight/gradients.length
-    let barY = totHeight*(1-p)
-    rect(0, barY-barHeight, width, barHeight)
-  }
-}
- 
-function windowResized(){
-  resizeCanvas(windowWidth, windowHeight)
+  // other bar is white
+  fill(200, 200, 200);
+  rect(4 * bar_spacing, bar_pos_y, bar_width, 4 * other);
 }
