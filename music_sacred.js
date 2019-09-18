@@ -4,7 +4,7 @@ var firstRun = true
 const gradients = Array(20).fill(0)
 const ellipses = Array(10).fill([0,0])
 
-let maxArr = [90,90,90,77]
+let maxArr = [90,90,90,80]
 
 function draw_one_frame(vocal, drum, bass, other, count) {
   if(firstRun){
@@ -31,21 +31,21 @@ function draw_one_frame(vocal, drum, bass, other, count) {
   translate(width/2, height/2)
 
 
-  let zoomDiff = 0.2
-  let rotsDiff = count*0.0002
+  let zoomDiff = 0.3
+  let rotsDiff = count*0.004
 
-  console.log(otherP)
+  console.log(1+rotsDiff*rotsDiff)
 
   push()
-  stroke(255, 0.5)
+  stroke(255, 0.7)
   scale(1.5)
-  sacred(otherP, 10+rotsDiff)
+  sacred(otherP, 4+rotsDiff)
 
   scale(zoomDiff)
-  sacred(otherP, -(5+rotsDiff*rotsDiff))
+  sacred(otherP, -(2+rotsDiff))
 
   scale(zoomDiff)
-  sacred(otherP, 2+rotsDiff*rotsDiff*rotsDiff*rotsDiff)
+  sacred(otherP, 1+rotsDiff)
 
   // scale(zoomDiff)
   // sacred(otherP, -(2+rotsDiff))
@@ -58,7 +58,7 @@ function draw_one_frame(vocal, drum, bass, other, count) {
   stroke(330, 100, 40, 0.6)
   ellipses.forEach((ellipSize,i) => {
     let p = i/ellipses.length
-    strokeWeight(p*10)
+    strokeWeight(p*30)
     ellipse(0, 0, ellipSize[0], ellipSize[1])
   })
 }
@@ -69,13 +69,13 @@ function sacred(sacredP, rotations){
   strokeWeight(2*sacredP)
   ellipse(0,0,size*2)
 
-  strokeWeight(5*sacredP)
+  // strokeWeight(2*sacredP)
   // let size = min(width,height)/2
   // let rotations = floor(count*0.001)+2
-
+  let absRot = Math.abs(rotations)
 
   push()
-  for(let i = 0; i < Math.abs(rotations); i++){
+  for(let i = 0; i < absRot; i++){
     // line(0,-size, size,0)
     // line(0,-size, -size,0)
     let extendP = sacredP
@@ -93,10 +93,10 @@ function gradient(){
     let hue = map(gradient, 0,1, 30,0)
     let sat = map(gradient, 0,1, 50,90)
     let bright = map(gradient, 0,1, 20, 90)
-    fill(hue, sat, bright, 0.8)
+    fill(hue, sat, bright, 0.9)
 
     let totHeight = height*(1+2/gradients.length)
-    let barHeight = 2*totHeight/gradients.length
+    let barHeight = Math.ceil(2*totHeight/gradients.length)
     let barY = totHeight*(1-p)
     rect(0, barY-barHeight, width, barHeight)
   }
