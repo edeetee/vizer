@@ -47,7 +47,9 @@ function setup() {
   main_canvas = createCanvas(canvasWidth, canvasHeight);
   main_canvas.parent('canvasContainer');
   song = loadSound('out0_all.mp3', songLoaded, songLoadedError, songLoadedSoFar);  
+  
   frameRate(60);
+  angleMode(DEGREES);
 
   // create sliders
   slider1 = createSlider(0, 100, 50);
@@ -148,7 +150,6 @@ function draw() {
         if(intSecs > 0) {
           let remainder = secondsRemaining - intSecs;
           let curAngle = map(remainder, 0, 1, 630, 270);
-          angleMode(DEGREES);
           // print(secondsRemaining, intSecs, remainder, curAngle);
           noStroke();
           fill(200);
