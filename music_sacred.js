@@ -32,20 +32,21 @@ function draw_one_frame(vocal, drum, bass, other, count) {
 
 
   let zoomDiff = 0.3
-  let rotsDiff = count*0.004
+  let expDiff = 0.5
+  let rotsDiff = count*0.0003
 
   console.log(1+rotsDiff*rotsDiff)
 
   push()
   stroke(255, 0.7)
   scale(1.5)
-  sacred(otherP, 4+rotsDiff)
+  sacred(otherP, 4.5+rotsDiff)
 
   scale(zoomDiff)
-  sacred(otherP, -(2+rotsDiff))
+  sacred(otherP, -(2.5+Math.pow(rotsDiff, 1+expDiff)))
 
   scale(zoomDiff)
-  sacred(otherP, 1+rotsDiff)
+  sacred(otherP, 1.5+Math.pow(rotsDiff, 1+expDiff*2))
 
   // scale(zoomDiff)
   // sacred(otherP, -(2+rotsDiff))
@@ -63,7 +64,7 @@ function draw_one_frame(vocal, drum, bass, other, count) {
   })
 }
 
-function sacred(sacredP, rotations){
+function sacred(sacredP, rotations, fullRot){
   let size = min(width, height)/2*(1-0.1*sacredP)
 
   strokeWeight(2*sacredP)
@@ -80,7 +81,7 @@ function sacred(sacredP, rotations){
     // line(0,-size, -size,0)
     let extendP = sacredP
     triangle(-size,-size, 0,size*extendP, size,-size)
-    rotate(1/rotations*360)
+    rotate((fullRot ? rotations : 1/rotations)*360)
   }
   pop()
 }
